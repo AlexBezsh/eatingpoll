@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/AlexBezsh/eatingpoll.svg?branch=master)](https://travis-ci.org/AlexBezsh/eatingpoll)
 
 # Eating Poll
-### Веб-приложение с минимальным графическим интерфейсом и функционалом реализовано в соответствии с заданием:
+### Веб-приложение реализовано с минимальным графическим интерфейсом и функционалом в соответствии с заданием:
 
 Build a voting system for deciding where to have lunch.
 
