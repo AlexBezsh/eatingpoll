@@ -26,7 +26,7 @@ public class UserController {
 
     private UserRepository userRepository;
     private RestaurantRepository restaurantRepository;
-    private final LocalTime votingFinish = LocalTime.of(20, 0);
+    private final LocalTime votingFinish = LocalTime.of(11, 0);
     private final String adminPassword = "password";
 
     @Autowired
