@@ -80,4 +80,15 @@ public class User extends AbstractEntity {
     public boolean isAdmin() {
         return role == Role.ADMIN;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name=" + name +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                ", chosenRestaurantId=" + chosenRestaurantId +
+                '}';
+    }
 }

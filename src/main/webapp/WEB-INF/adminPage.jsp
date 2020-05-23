@@ -10,7 +10,7 @@
     <h1>Eating Poll</h1>
     <p><a href="${pageContext.request.contextPath}/">Back to profile options</a></p>
     <br/>
-    <h4>Add New Restaurant:<h4/>
+    <h4>Add New Restaurant:</h4>
         <form:form action="restaurant/save?userId=${user.id}" method="post" modelAttribute="restaurant">
             <table border="0" cellpadding="5">
                 <tr>
@@ -21,7 +21,7 @@
             </table>
         </form:form>
         <br/>
-        <a href="${pageContext.request.contextPath}/discard?userId=${user.id}">Discard Results of Voting</a></h4>
+        <h4><a href="${pageContext.request.contextPath}/discard?userId=${user.id}">Discard Results of Voting</a></h4>
 
     <c:forEach items="${restaurants}" var="restaurant">
         <br/>

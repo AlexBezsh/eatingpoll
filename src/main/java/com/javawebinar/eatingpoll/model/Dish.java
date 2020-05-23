@@ -39,4 +39,14 @@ public class Dish extends AbstractEntity {
     public void setRestaurantId(long restaurantId) {
         this.restaurantId = restaurantId;
     }
+
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "id=" + id +
+                ", name=" + name +
+                ", price=" + price +
+                ", restaurantId=" + restaurantId +
+                '}';
+    }
 }

@@ -11,12 +11,12 @@ public abstract class AbstractEntity {
     @Column(name = "id", unique = true, nullable = false)
     @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
-    private Long id;
+    protected Long id;
 
     @NotBlank
     @Size(min = 2, max = 60)
     @Column(name = "name")
-    private String name;
+    protected String name;
 
     public AbstractEntity() {}
 
