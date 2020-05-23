@@ -7,7 +7,7 @@
 </head>
 <body>
 <h2>Eating Poll</h2>
-<p><a href="/">Back to profile options</a></p>
+<p><a href="${pageContext.request.contextPath}/">Back to profile options</a></p>
 
 <c:forEach items="${restaurants}" var="restaurant">
     <br/>

@@ -6,18 +6,18 @@
     <title>Eating Poll</title>
 </head>
 <body>
-<h2>Eating Poll</h2>
-<h3><a href="${pageContext.request.contextPath}/user/create">Sigh up</a></h3>
-<h4>Log in:</h4>
+<h1>Eating Poll</h1>
+<h2><a href="${pageContext.request.contextPath}/user/create">Sigh up</a></h2>
+<h3>Log in:</h3>
 <form:form action="user/login" modelAttribute="user">
     <table border="0" cellpadding="5">
         <tr>
-            <td>Email: </td>
-            <td><form:input path="email" /></td>
+            <td>Email:</td>
+            <td><form:input path="email"/></td>
         </tr>
         <tr>
-            <td>Password: </td>
-            <td><form:password path="password" /></td>
+            <td>Password:</td>
+            <td><form:password path="password"/></td>
         </tr>
         <tr>
             <td colspan="2"><input type="submit" value="Log in"></td>
@@ -34,8 +34,8 @@
 <form:form action="user/create" modelAttribute="user">
     <table border="0" cellpadding="5">
         <tr>
-            <td>Password: </td>
-            <td><form:password  path="password" /></td>
+            <td>Password:</td>
+            <td><form:password path="password"/></td>
         </tr>
         <tr>
             <td colspan="2"><input type="submit" value="Sigh up"></td>
