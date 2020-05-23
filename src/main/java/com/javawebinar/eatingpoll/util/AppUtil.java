@@ -22,10 +22,11 @@ public class AppUtil {
         return num;
     }
 
-    public static Dish checkEntity(Dish dish, String name, Double price) {
+    public static Dish checkEntity(Dish dish, String name, Double price, Long restaurantId) {
         checkName(name);
-        if (price == null || price < 0) throw new BadRequestException("Price should be a positive number");
+        if (price == null || price < 0) throw new BadRequestException("Price should be a positive number or 0");
         dish.setPrice(Double.parseDouble(String.format("%.2f", price).replace(',', '.')));
+        if (restaurantId == null || restaurantId < 0) throw new BadRequestException("Dish has wrong restaurantId");
         return dish;
     }
 

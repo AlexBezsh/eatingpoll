@@ -54,7 +54,7 @@ public class DishController {
 
     @PostMapping(value = "/save")
     public String saveDish(@ModelAttribute("dish") Dish dish, @RequestParam String userId) {
-        dishRepository.saveAndFlush(checkEntity(dish, dish.getName(), dish.getPrice()));
+        dishRepository.saveAndFlush(checkEntity(dish, dish.getName(), dish.getPrice(), dish.getRestaurantId()));
         return "redirect:/voting?userId=" + userId;
     }
 

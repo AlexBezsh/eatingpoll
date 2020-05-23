@@ -42,7 +42,7 @@ public class UserController {
     @GetMapping(value = "/")
     public ModelAndView start() {
         List<User> mockUsers = List.of(
-                new User(1L, "User1", "user1@hmail.com", "user1", Role.USER, null),
+                new User(1L, "User1", "user1@gmail.com", "user1", Role.USER, null),
                 new User(2L, "User2", "user2@gmail.com", "user2", Role.USER, null),
                 new User(3L, "Admin1", "admin1@gmail.com", "admin1", Role.ADMIN, null));
         ModelAndView mav = new ModelAndView("index");
