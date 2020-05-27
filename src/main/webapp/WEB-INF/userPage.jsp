@@ -8,14 +8,13 @@
 <body>
 <div align="center">
     <h1>Eating Poll</h1>
-    <h4>User: ${user.name}. Role: ${user.role} <a
-            href="${pageContext.request.contextPath}/user/update?userEmail=${user.email}&userPassword=${user.password}">Update
-        profile</a> <a ${(user.id == 1 || user.id == 2) ? "hidden" : ""}
-            href="${pageContext.request.contextPath}/user/delete?userId=${user.id}&userEmail=${user.email}&userPassword=${user.password}">Delete
-        this profile</a></h4>
     <p><a href="${pageContext.request.contextPath}/">Back to profile options</a></p>
+    <h4>User: ${user.name}. Role: ${user.role}
+        <a href="${pageContext.request.contextPath}/user/update?userEmail=${user.email}&userPassword=${user.password}">Update profile</a>
+        <a ${(user.id == 1 || user.id == 2) ? "hidden" : ""} href="${pageContext.request.contextPath}/user/delete?userId=${user.id}&userEmail=${user.email}&userPassword=${user.password}">Delete this profile</a>
+    </h4>
+    <h3>Restaurants:</h3>
     <c:forEach items="${restaurants}" var="restaurant">
-        <br/>
         <h4>${restaurant.name}</h4>
         <p>Number of Votes: ${restaurant.votesCount} <a
                 href="${pageContext.request.contextPath}/user/vote?restaurantId=${restaurant.id}&userEmail=${user.email}&userPassword=${user.password}">Choose</a>

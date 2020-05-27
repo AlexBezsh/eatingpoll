@@ -32,7 +32,7 @@
             </tr>
         </c:forEach>
     </table>
-    <p>Note: You can't delete mock users. If you want to test "delete" button create new account</p>
+    <p>Note: You can't delete mock users. If you want to test "delete" button create a new account</p>
 </div>
 </body>
 </html>
