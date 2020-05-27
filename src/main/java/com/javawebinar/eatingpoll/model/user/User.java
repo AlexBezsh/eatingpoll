@@ -29,7 +29,7 @@ public class User extends AbstractEntity {
 
     @Column(name = "chosenRestaurantId")
     @JoinColumn(table = "restaurants", name = "id")
-    private Long chosenRestaurantId;
+    private Long chosenRestaurantId; //https://stackoverflow.com/questions/6311776/hibernate-foreign-keys-instead-of-entities
 
     public User() {}
 

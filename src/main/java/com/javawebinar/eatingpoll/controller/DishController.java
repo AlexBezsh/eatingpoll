@@ -15,7 +15,7 @@ import static com.javawebinar.eatingpoll.util.AppUtil.checkEntity;
 import static com.javawebinar.eatingpoll.util.AppUtil.parseId;
 
 @Controller
-@RequestMapping(value = "/dish")
+@RequestMapping(value = "/admin/dish")
 public class DishController {
 
     private final Logger logger = LoggerFactory.getLogger(DishController.class);
@@ -34,43 +34,49 @@ public class DishController {
     }
 
     @RequestMapping(value = "/create")
-    public ModelAndView createDish(@RequestParam String restaurantId, @RequestParam String userId) {
-        logger.info("creating dish with restaurantId={} by user with id={}", restaurantId, userId);
+    public ModelAndView createDish(@RequestParam String restaurantId, @RequestParam("userEmail") String email, @RequestParam("userPassword") String encodedPassword) {
+        logger.info("creating dish with restaurantId={}", restaurantId);
+
         Dish dish = new Dish();
         long parsedRestaurantId = parseId(restaurantId);
-        if (!restaurantRepository.existsById(parsedRestaurantId)) throw new EntityNotFoundException("There is no restaurant with id=" + restaurantId + "in repository");
+        if (!restaurantRepository.existsById(parsedRestaurantId))
+            throw new EntityNotFoundException("There is no restaurant with id=" + restaurantId + "in repository");
         dish.setRestaurantId(parsedRestaurantId);
-        ModelAndView mav = new ModelAndView("dishForm");
-        mav.addObject("dish", dish);
-        mav.addObject("userId", userId);
-        return mav;
-    }
 
-    @RequestMapping(value = "/update")
-    public ModelAndView updateDish(@RequestParam String dishId, @RequestParam String userId) {
-        logger.info("updating dish with id={} by user with id={}", dishId, userId);
-        long parsedDishId = parseId(dishId);
-        if (!dishRepository.existsById(parsedDishId)) throw new EntityNotFoundException("There is no dish with id=" + dishId + "in repository");
-        Dish dish = dishRepository.findById(parseId(dishId)).get();
         ModelAndView mav = new ModelAndView("dishForm");
         mav.addObject("dish", dish);
-        mav.addObject("userId", userId);
+        mav.addObject("userEmail", email);
+        mav.addObject("userPassword", encodedPassword);
         return mav;
     }
 
     @PostMapping(value = "/save")
-    public String saveDish(@ModelAttribute("dish") Dish dish, @RequestParam String userId) {
-        logger.info("saving dish: {} by user with id={}", dish, userId);
+    public String saveDish(@ModelAttribute("dish") Dish dish, @RequestParam("userEmail") String email, @RequestParam("userPassword") String encodedPassword) {
+        logger.info("saving dish: {}", dish);
         dishRepository.saveAndFlush(checkEntity(dish, dish.getName(), dish.getPrice(), dish.getRestaurantId()));
-        return "redirect:/voting?userId=" + userId;
+        return "redirect:/admin/home?userEmail=" + email + "&userPassword=" + encodedPassword;
     }
 
-    @RequestMapping(value ="/delete")
-    public String deleteById(@RequestParam String dishId, @RequestParam String userId) {
-        logger.info("deleting dish with id={} by user with id={}", dishId, userId);
+    @RequestMapping(value = "/update")
+    public ModelAndView updateDish(@RequestParam String dishId, @RequestParam("userEmail") String email, @RequestParam("userPassword") String encodedPassword) {
+        logger.info("updating dish with id={}", dishId);
+        long parsedDishId = parseId(dishId);
+        if (!dishRepository.existsById(parsedDishId))
+            throw new EntityNotFoundException("There is no dish with id=" + dishId + "in repository");
+        Dish dish = dishRepository.findById(parseId(dishId)).get();
+        ModelAndView mav = new ModelAndView("dishForm");
+        mav.addObject("dish", dish);
+        mav.addObject("userEmail", email);
+        mav.addObject("userPassword", encodedPassword);
+        return mav;
+    }
+
+    @RequestMapping(value = "/delete")
+    public String deleteById(@RequestParam String dishId, @RequestParam("userEmail") String email, @RequestParam("userPassword") String encodedPassword) {
+        logger.info("deleting dish with id={}", dishId);
         long parsedDishId = parseId(dishId);
         if (dishRepository.existsById(parsedDishId)) dishRepository.deleteById(parsedDishId);
         else throw new EntityNotFoundException("There is no dish with id=" + parsedDishId + " in repository");
-        return "redirect:/voting?userId=" + userId;
+        return "redirect:/admin/home?userEmail=" + email + "&userPassword=" + encodedPassword;
     }
 }

@@ -7,9 +7,9 @@
 </head>
 <body>
 <h1>Eating Poll</h1>
-<h2><a href="${pageContext.request.contextPath}/user/create">Sigh up</a></h2>
+<h2><a href="${pageContext.request.contextPath}/create">Sigh up</a></h2>
 <h3>Log in:</h3>
-<form:form action="user/login" modelAttribute="user">
+<form:form action="${pageContext.request.contextPath}/login" modelAttribute="user">
     <table border="0" cellpadding="5">
         <tr>
             <td>Email:</td>
@@ -27,11 +27,13 @@
 <br/>
 <h4>Choose mock profile:</h4>
 <c:forEach items="${users}" var="user">
-    <li><a href="${pageContext.request.contextPath}/voting?userId=${user.id}">${user.name} - Role: ${user.role}</a></li>
+    <li>
+        <a href="${pageContext.request.contextPath}/${user.admin ? "admin" : "user"}/home?userEmail=${user.email}&userPassword=${user.password}">${user.name}
+            - Role: ${user.role}</a></li>
 </c:forEach>
 <br/>
-<h4>Sigh up as admin:</h4>
-<form:form action="user/create" modelAttribute="user">
+<h4>Sigh up as admin (enter "password"):</h4>
+<form:form action="${pageContext.request.contextPath}/create" modelAttribute="user">
     <table border="0" cellpadding="5">
         <tr>
             <td>Password:</td>

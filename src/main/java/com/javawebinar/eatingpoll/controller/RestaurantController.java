@@ -10,10 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 
@@ -22,7 +19,7 @@ import java.util.List;
 import static com.javawebinar.eatingpoll.util.AppUtil.*;
 
 @Controller
-@RequestMapping(value = "/restaurant", produces = "text/plain;charset=UTF-8")
+@RequestMapping(value = "/admin/restaurant")
 public class RestaurantController {
 
     private final Logger logger = LoggerFactory.getLogger(RestaurantController.class);
@@ -47,40 +44,43 @@ public class RestaurantController {
     }
 
     @PostMapping(value = "/save")
-    public String saveRestaurant(@ModelAttribute("restaurant") Restaurant restaurant, @RequestParam String userId) {
-        logger.info("saving restaurant: {} by user with id={}", restaurant, userId);
+    public String saveRestaurant(@ModelAttribute("restaurant") Restaurant restaurant, @RequestParam("userEmail") String email, @RequestParam("userPassword") String encodedPassword) {
+        logger.info("saving restaurant: {}", restaurant);
         restaurantRepository.saveAndFlush(checkEntity(restaurant, restaurant.getName()));
-        return "redirect:/voting?userId=" + userId;
+        return "redirect:/admin/home?userEmail=" + email + "&userPassword=" + encodedPassword;
     }
 
     @PostMapping(value = "/update")
-    public String updateRestaurant(@ModelAttribute("restaurant") Restaurant restaurant, @RequestParam String userId) {
-        logger.info("updating restaurant with id={} by user with id={}", restaurant.getId(), userId);
+    public String updateRestaurant(@ModelAttribute("restaurant") Restaurant restaurant, @RequestParam("userEmail") String email, @RequestParam("userPassword") String encodedPassword) {
+        logger.info("updating restaurant with id={}", restaurant.getId());
         Restaurant restaurantFromDB = restaurantRepository.findById(restaurant.getId()).get();
         restaurantFromDB.setName(checkName(restaurant.getName()));
         restaurantRepository.saveAndFlush(restaurantFromDB);
-        return "redirect:/voting?userId=" + userId;
+        return "redirect:/admin/home?userEmail=" + email + "&userPassword=" + encodedPassword;
     }
 
     @Transactional
     @RequestMapping(value = "/delete")
-    public String deleteById(@RequestParam String restaurantId, @RequestParam String userId) {
-        logger.info("deleting restaurant with id={} by user with id={} in three steps", restaurantId, userId);
+    public String deleteById(@RequestParam String restaurantId, @RequestParam("userEmail") String email, @RequestParam("userPassword") String encodedPassword) {
+        logger.info("deleting restaurant with id={} in three steps", restaurantId);
+
         long parsedRestaurantId = parseId(restaurantId);
         if (restaurantRepository.existsById(parsedRestaurantId)) {
             logger.info("step one: deleting all dishes of restaurant with id={}", restaurantId);
             Restaurant restaurant = restaurantRepository.findById(parsedRestaurantId).get();
             dishRepository.deleteAll(restaurant.getDishes());
 
-            logger.info("step two: cleaning chosenRestaurantId variables in users, who have chosen restaurant with id={}", restaurantId);
+            logger.info("step two: cleaning \"chosenRestaurantId\" variable in users, who have chosen restaurant with id={}", restaurantId);
             List<User> users = userRepository.findAllByChosenRestaurantId(parsedRestaurantId);
-            for (User user: users) user.setChosenRestaurantId(null);
+            for (User userr : users) userr.setChosenRestaurantId(null);
             userRepository.saveAll(users);
 
             logger.info("step three: deleting restaurant with id={} from database", restaurantId);
             restaurantRepository.deleteById(parsedRestaurantId);
-        } else throw new EntityNotFoundException("There is no restaurant with id=" + parsedRestaurantId + " in repository");
-        return "redirect:/voting?userId=" + userId;
+        } else
+            throw new EntityNotFoundException("There is no restaurant with id=" + parsedRestaurantId + " in repository");
+
+        return "redirect:/admin/home?userEmail=" + email + "&userPassword=" + encodedPassword;
     }
 }
 

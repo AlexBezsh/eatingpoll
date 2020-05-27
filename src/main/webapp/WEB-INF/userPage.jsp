@@ -6,29 +6,35 @@
     <title>Eating Poll</title>
 </head>
 <body>
-<h2>Eating Poll</h2>
-<p><a href="${pageContext.request.contextPath}/">Back to profile options</a></p>
-
-<c:forEach items="${restaurants}" var="restaurant">
-    <br/>
-    <h4>${restaurant.name}</h4>
-    <p>Number of Votes: ${restaurant.votesCount} <a
-            href="${pageContext.request.contextPath}/vote?restaurantId=${restaurant.id}&userId=${user.id}">Choose</a>
-    </p>
-    <table border="1" cellpadding="5">
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Price</th>
-        </tr>
-        <c:forEach items="${restaurant.dishes}" var="dish">
+<div align="center">
+    <h1>Eating Poll</h1>
+    <h4>User: ${user.name}. Role: ${user.role} <a
+            href="${pageContext.request.contextPath}/user/update?userEmail=${user.email}&userPassword=${user.password}">Update
+        profile</a> <a ${(user.id == 1 || user.id == 2) ? "hidden" : ""}
+            href="${pageContext.request.contextPath}/user/delete?userId=${user.id}&userEmail=${user.email}&userPassword=${user.password}">Delete
+        this profile</a></h4>
+    <p><a href="${pageContext.request.contextPath}/">Back to profile options</a></p>
+    <c:forEach items="${restaurants}" var="restaurant">
+        <br/>
+        <h4>${restaurant.name}</h4>
+        <p>Number of Votes: ${restaurant.votesCount} <a
+                href="${pageContext.request.contextPath}/user/vote?restaurantId=${restaurant.id}&userEmail=${user.email}&userPassword=${user.password}">Choose</a>
+        </p>
+        <table border="1" cellpadding="5">
             <tr>
-                <td>${dish.id}</td>
-                <td>${dish.name}</td>
-                <td>${dish.price}</td>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
             </tr>
-        </c:forEach>
-    </table>
-</c:forEach>
+            <c:forEach items="${restaurant.dishes}" var="dish">
+                <tr>
+                    <td>${dish.id}</td>
+                    <td>${dish.name}</td>
+                    <td>${dish.price}</td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:forEach>
+</div>
 </body>
 </html>

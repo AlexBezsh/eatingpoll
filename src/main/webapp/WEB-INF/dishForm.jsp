@@ -10,7 +10,9 @@
 <div align="center">
     <h2>Eating Poll</h2>
     <h2>New Dish</h2>
-    <form:form action="save?userId=${userId}" method="post" modelAttribute="dish">
+    <form:form
+            action="${pageContext.request.contextPath}/admin/dish/save?userEmail=${userEmail}&userPassword=${userPassword}"
+            method="post" modelAttribute="dish">
         <table border="0" cellpadding="5">
             <tr>
                 <td><form:hidden path="id" value="${dish.id}"/></td>
