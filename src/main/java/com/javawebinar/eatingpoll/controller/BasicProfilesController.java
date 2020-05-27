@@ -26,7 +26,7 @@ public class BasicProfilesController {
 
     private final Logger logger = LoggerFactory.getLogger(BasicProfilesController.class);
 
-    private final LocalTime votingFinish = LocalTime.of(20, 0);
+    private final LocalTime votingFinish = LocalTime.of(23, 59);
     private final String adminPassword = "password";
 
     protected UserRepository userRepository;

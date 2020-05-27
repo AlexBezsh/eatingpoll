@@ -12,9 +12,9 @@ Build a voting system for deciding where to have lunch.
  * Users can vote on which restaurant they want to have lunch at
  * Only one vote counted per user
  * If user votes again the same day:
-    - If it is before 11:00 we asume that he changed his mind.
-    - If it is after 11:00 then it is too late, vote can't be changed
-
+    - If it is before 11:00 we asume that he changed his mind;
+    - If it is after 11:00 then it is too late, vote can't be changed _(для тестирования приложения в BasicProfilesController-e переменная votingFinish выставлена на 23:59)_.
+    
 Each restaurant provides new menu each day.
 
 ### Использованные технологии: 
