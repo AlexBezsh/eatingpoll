@@ -9,11 +9,11 @@ import java.util.List;
 public class Restaurant extends AbstractEntity {
 
     @NotNull
-    @Column(name = "votesCount")
+    @Column(name = "votes_count")
     private Integer votesCount = 0;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "restaurantId")
+    @JoinColumn(name = "restaurant_id")
     private List<Dish> dishes;
 
     public Restaurant () {}

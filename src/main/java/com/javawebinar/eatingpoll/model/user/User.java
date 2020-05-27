@@ -27,7 +27,7 @@ public class User extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(name = "chosenRestaurantId")
+    @Column(name = "chosen_restaurant_id")
     @JoinColumn(table = "restaurants", name = "id")
     private Long chosenRestaurantId; //https://stackoverflow.com/questions/6311776/hibernate-foreign-keys-instead-of-entities
 

@@ -12,7 +12,7 @@ public class Dish extends AbstractEntity {
     private Double price;
 
     @NotNull
-    @Column(name = "restaurantId")
+    @Column(name = "restaurant_id")
     @JoinColumn(table = "restaurants", name = "id")
     private Long restaurantId;
 
