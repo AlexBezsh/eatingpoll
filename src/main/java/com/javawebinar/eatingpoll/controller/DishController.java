@@ -34,20 +34,14 @@ public class DishController {
     }
 
     @RequestMapping(value = "/create")
-    public ModelAndView createDish(@RequestParam String restaurantId, @RequestParam("userEmail") String email, @RequestParam("userPassword") String encodedPassword) {
+    public ModelAndView createNewDish(@RequestParam String restaurantId, @RequestParam("userEmail") String email, @RequestParam("userPassword") String encodedPassword) {
         logger.info("creating dish with restaurantId={}", restaurantId);
-
         Dish dish = new Dish();
         long parsedRestaurantId = parseId(restaurantId);
         if (!restaurantRepository.existsById(parsedRestaurantId))
             throw new EntityNotFoundException("There is no restaurant with id=" + restaurantId + "in repository");
         dish.setRestaurantId(parsedRestaurantId);
-
-        ModelAndView mav = new ModelAndView("dishForm");
-        mav.addObject("dish", dish);
-        mav.addObject("userEmail", email);
-        mav.addObject("userPassword", encodedPassword);
-        return mav;
+        return modelAndViewForDishForm(dish, email, encodedPassword);
     }
 
     @PostMapping(value = "/save")
@@ -61,14 +55,9 @@ public class DishController {
     public ModelAndView updateDish(@RequestParam String dishId, @RequestParam("userEmail") String email, @RequestParam("userPassword") String encodedPassword) {
         logger.info("updating dish with id={}", dishId);
         long parsedDishId = parseId(dishId);
-        if (!dishRepository.existsById(parsedDishId))
-            throw new EntityNotFoundException("There is no dish with id=" + dishId + "in repository");
+        if (!dishRepository.existsById(parsedDishId)) throw new EntityNotFoundException("There is no dish with id=" + dishId + "in repository");
         Dish dish = dishRepository.findById(parseId(dishId)).get();
-        ModelAndView mav = new ModelAndView("dishForm");
-        mav.addObject("dish", dish);
-        mav.addObject("userEmail", email);
-        mav.addObject("userPassword", encodedPassword);
-        return mav;
+        return modelAndViewForDishForm(dish, email, encodedPassword);
     }
 
     @RequestMapping(value = "/delete")
@@ -78,5 +67,13 @@ public class DishController {
         if (dishRepository.existsById(parsedDishId)) dishRepository.deleteById(parsedDishId);
         else throw new EntityNotFoundException("There is no dish with id=" + parsedDishId + " in repository");
         return "redirect:/admin/home?userEmail=" + email + "&userPassword=" + encodedPassword;
+    }
+
+    private ModelAndView modelAndViewForDishForm(Dish dish, String email, String encodedPassword) {
+        ModelAndView mav = new ModelAndView("dishForm");
+        mav.addObject("dish", dish);
+        mav.addObject("userEmail", email);
+        mav.addObject("userPassword", encodedPassword);
+        return mav;
     }
 }

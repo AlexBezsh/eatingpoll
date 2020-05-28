@@ -44,7 +44,7 @@ public class RestaurantController {
     }
 
     @PostMapping(value = "/save")
-    public String saveRestaurant(@ModelAttribute("restaurant") Restaurant restaurant, @RequestParam("userEmail") String email, @RequestParam("userPassword") String encodedPassword) {
+    public String saveNewRestaurant(@ModelAttribute("restaurant") Restaurant restaurant, @RequestParam("userEmail") String email, @RequestParam("userPassword") String encodedPassword) {
         logger.info("saving restaurant: {}", restaurant);
         restaurantRepository.saveAndFlush(checkEntity(restaurant, restaurant.getName()));
         return "redirect:/admin/home?userEmail=" + email + "&userPassword=" + encodedPassword;
@@ -72,7 +72,7 @@ public class RestaurantController {
 
             logger.info("step two: cleaning \"chosenRestaurantId\" variable in users, who have chosen restaurant with id={}", restaurantId);
             List<User> users = userRepository.findAllByChosenRestaurantId(parsedRestaurantId);
-            for (User userr : users) userr.setChosenRestaurantId(null);
+            for (User user : users) user.setChosenRestaurantId(null);
             userRepository.saveAll(users);
 
             logger.info("step three: deleting restaurant with id={} from database", restaurantId);
