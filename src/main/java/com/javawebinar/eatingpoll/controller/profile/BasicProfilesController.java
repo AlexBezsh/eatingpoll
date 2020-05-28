@@ -1,4 +1,4 @@
-package com.javawebinar.eatingpoll.controller;
+package com.javawebinar.eatingpoll.controller.profile;
 
 import com.javawebinar.eatingpoll.exceptions.BadRequestException;
 import com.javawebinar.eatingpoll.exceptions.EntityNotFoundException;
@@ -28,6 +28,7 @@ public class BasicProfilesController {
 
     private final LocalTime votingFinish = LocalTime.of(23, 59);
     private final String adminPassword = "password";
+    private final Object objectForSynchronization = new Object();
 
     protected UserRepository userRepository;
     protected RestaurantRepository restaurantRepository;
@@ -127,26 +128,28 @@ public class BasicProfilesController {
     }
 
     protected void vote(String restaurantId, String email, String password) {
-        if (LocalTime.now().isAfter(votingFinish)) throw new TimeException("You can't vote after 11 o'clock");
+        if (LocalTime.now().isAfter(votingFinish)) throw new TimeException("You can't vote after " + votingFinish);
         User user = getUser(email, password);
         logger.info("user: {} choosing restaurant with id={}. Saving process takes three steps", user, restaurantId);
 
         long parsedRestaurantId = parseId(restaurantId);
         if (restaurantRepository.existsById(parsedRestaurantId)) {
             logger.info("step one: checking whether user: {} has already voted and decrementing number of votes in previous restaurant", user);
-            if (user.hasVoted()) {
-                Restaurant previousUserRestaurant = restaurantRepository.findById(user.getChosenRestaurantId()).get();
-                previousUserRestaurant.minusVote();
-                restaurantRepository.saveAndFlush(previousUserRestaurant);
-            }
-            logger.info("step two: incrementing number of votes in chosen restaurant");
-            Restaurant restaurant = restaurantRepository.findById(parsedRestaurantId).get();
-            restaurant.plusVote();
-            restaurantRepository.saveAndFlush(restaurant);
+            synchronized (objectForSynchronization) {
+                if (user.hasVoted()) {
+                    Restaurant previousUserRestaurant = restaurantRepository.findById(user.getChosenRestaurantId()).get();
+                    previousUserRestaurant.minusVote();
+                    restaurantRepository.saveAndFlush(previousUserRestaurant);
+                }
+                logger.info("step two: incrementing number of votes in chosen restaurant");
+                Restaurant restaurant = restaurantRepository.findById(parsedRestaurantId).get();
+                restaurant.plusVote();
+                restaurantRepository.saveAndFlush(restaurant);
 
-            logger.info("step three: saving new \"chosenRestaurantId\" in user: {}", user);
-            user.setChosenRestaurantId(restaurant.getId());
-            userRepository.saveAndFlush(user);
+                logger.info("step three: saving new \"chosenRestaurantId\" in user: {}", user);
+                user.setChosenRestaurantId(restaurant.getId());
+                userRepository.saveAndFlush(user);
+            }
         } else
             throw new EntityNotFoundException("There is no restaurant with id=" + parsedRestaurantId + " in repository");
     }

@@ -1,10 +1,11 @@
-package com.javawebinar.eatingpoll.controller;
+package com.javawebinar.eatingpoll.controller.profile;
 
 import com.javawebinar.eatingpoll.exceptions.BadRequestException;
 import com.javawebinar.eatingpoll.exceptions.EntityNotFoundException;
 import com.javawebinar.eatingpoll.model.user.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
