@@ -1,16 +1,18 @@
-package com.javawebinar.eatingpoll;
+package com.javawebinar.eatingpoll.controller;
 
 import com.javawebinar.eatingpoll.config.AppConfig;
 import com.javawebinar.eatingpoll.config.InitConfig;
 import com.javawebinar.eatingpoll.config.WebConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringJUnitWebConfig(classes = {AppConfig.class, InitConfig.class, WebConfig.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // reinitializing database before every test
 public abstract class AbstractControllerTest {
 
     public WebApplicationContext context;
