@@ -18,4 +18,4 @@ Build a voting system for deciding where to have lunch.
 Each restaurant provides new menu each day.
 
 ### Использованные технологии: 
-Spring MVC, Spring Data JPA + Hibernate, тесты - JUnit, база данных - HSQLDB, cборка приложения - Maven, запуск - Tomcat 9, графический интерфейс - JSP, JSTL. Среда разработки - IntelliJ IDEA.
+Spring MVC, Spring Data JPA + Hibernate, тесты - JUnit, база данных - HSQLDB, cборка приложения - Maven, запуск - Tomcat 9, графический интерфейс - JSP, JSTL, версия JDK - 11. Cреда разработки - IntelliJ IDEA.
