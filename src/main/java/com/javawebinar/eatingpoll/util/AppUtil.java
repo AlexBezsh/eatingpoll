@@ -41,7 +41,7 @@ public class AppUtil {
     public static User checkEntity(User user, String name, String email, String password, Role role) {
         checkName(name);
         if (password == null || password.isBlank() || password.length() < 5 || password.length() > 20) throw new BadRequestException("Password must be between 5 and 20 characters");
-        if (!password.matches("\\w+")) throw new BadRequestException("Password mustn't contain other symbols except numbers and latin characters");
+        if (!password.matches("\\w+")) throw new BadRequestException("Only numbers and latin letters can be used in the password");
         if (email == null || !email.matches(".+@.+\\..+")) throw new BadRequestException("Wrong email");
         if (role == null) user.setRole(Role.USER);
         return user;
