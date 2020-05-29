@@ -29,7 +29,7 @@
                 <tr>
                     <td>${dish.id}</td>
                     <td>${dish.name}</td>
-                    <td>${dish.price}</td>
+                    <td>${dish.price.toString().matches("\\d+\\.\\d{1}") ? dish.price.toString().concat("0") : dish.price.toString()}</td>
                 </tr>
             </c:forEach>
         </table>
