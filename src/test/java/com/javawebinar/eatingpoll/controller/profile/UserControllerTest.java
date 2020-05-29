@@ -1,7 +1,10 @@
 package com.javawebinar.eatingpoll.controller.profile;
 
 import com.javawebinar.eatingpoll.controller.AbstractControllerTest;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalTime;
 
 import static com.javawebinar.eatingpoll.TestData.*;
 import static org.hamcrest.Matchers.*;
@@ -23,6 +26,9 @@ public class UserControllerTest extends AbstractControllerTest {
 
     @Test
     public void userVote_RestaurantShouldHaveOneVote() throws Exception {
+        LocalTime votingFinish = LocalTime.of(Integer.parseInt(env.getProperty(PROP_VOTING_FINISH_HOUR)), Integer.parseInt(env.getProperty(PROP_VOTING_FINISH_MINUTE)));
+        Assumptions.assumeTrue(LocalTime.now().isBefore(votingFinish));
+
         mockMvc.perform(get("/user/vote?restaurantId=" + MOCK_RESTAURANT1.getId() + "&userEmail=" + MOCK_USER2.getEmail() + "&userPassword=" + MOCK_USER2.getPassword()))
                 .andExpect(redirectedUrl("/user/home?userEmail=" + MOCK_USER2.getEmail() + "&userPassword=" + MOCK_USER2.getPassword()));
 

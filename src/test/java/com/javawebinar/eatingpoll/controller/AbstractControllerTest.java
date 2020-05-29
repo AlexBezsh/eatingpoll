@@ -5,6 +5,7 @@ import com.javawebinar.eatingpoll.config.InitConfig;
 import com.javawebinar.eatingpoll.config.WebConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
@@ -15,8 +16,18 @@ import org.springframework.web.context.WebApplicationContext;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // reinitializing database before every test
 public abstract class AbstractControllerTest {
 
+    protected static final String PROP_VOTING_FINISH_HOUR = "voting.finish.hour";
+    protected static final String PROP_VOTING_FINISH_MINUTE = "voting.finish.minute";
+
+    protected Environment env;
+
     public WebApplicationContext context;
     public MockMvc mockMvc;
+
+    @Autowired
+    public void setEnv(Environment env) {
+        this.env = env;
+    }
 
     @Autowired
     public void setContext(WebApplicationContext context) {

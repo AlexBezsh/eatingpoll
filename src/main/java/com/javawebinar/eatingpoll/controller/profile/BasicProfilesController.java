@@ -11,6 +11,7 @@ import com.javawebinar.eatingpoll.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,9 +25,13 @@ import static com.javawebinar.eatingpoll.util.AppUtil.*;
 @Controller
 public class BasicProfilesController {
 
+    private static final String PROP_VOTING_FINISH_HOUR = "voting.finish.hour";
+    private static final String PROP_VOTING_FINISH_MINUTE = "voting.finish.minute";
+
+    private Environment env;
+
     private final Logger logger = LoggerFactory.getLogger(BasicProfilesController.class);
 
-    private final LocalTime votingFinish = LocalTime.of(23, 59);
     private final String adminPassword = "password";
     private final Object objectForSynchronization = new Object();
 
@@ -41,6 +46,11 @@ public class BasicProfilesController {
     @Autowired
     public void setRestaurantRepository(RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
+    }
+
+    @Autowired
+    public void setEnv(Environment env) {
+        this.env = env;
     }
 
     @GetMapping(value = "/")
@@ -128,6 +138,7 @@ public class BasicProfilesController {
     }
 
     protected void vote(String restaurantId, String email, String password) {
+        LocalTime votingFinish = LocalTime.of(Integer.parseInt(env.getProperty(PROP_VOTING_FINISH_HOUR)), Integer.parseInt(env.getProperty(PROP_VOTING_FINISH_MINUTE)));
         if (LocalTime.now().isAfter(votingFinish)) throw new TimeException("You can't vote after " + votingFinish);
         User user = getUser(email, password);
         logger.info("user: {} choosing restaurant with id={}. Saving process takes three steps", user, restaurantId);
