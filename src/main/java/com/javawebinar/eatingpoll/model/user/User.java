@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User extends AbstractEntity {
 
     @Email
@@ -28,7 +28,7 @@ public class User extends AbstractEntity {
     private Role role;
 
     @Column(name = "chosen_restaurant_id")
-    @JoinColumn(table = "restaurants", name = "id")
+    @JoinColumn(table = "restaurant", name = "id")
     private Long chosenRestaurantId; //https://stackoverflow.com/questions/6311776/hibernate-foreign-keys-instead-of-entities
 
     public User() {}

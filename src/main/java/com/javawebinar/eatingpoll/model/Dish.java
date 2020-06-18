@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "dishes")
+@Table(name = "dish")
 public class Dish extends AbstractEntity {
 
     @NotNull
@@ -13,7 +13,7 @@ public class Dish extends AbstractEntity {
 
     @NotNull
     @Column(name = "restaurant_id")
-    @JoinColumn(table = "restaurants", name = "id")
+    @JoinColumn(table = "restaurant", name = "id")
     private Long restaurantId;
 
     public Dish() {}
