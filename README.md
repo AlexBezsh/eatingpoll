@@ -2,8 +2,7 @@
 [![Build Status](https://travis-ci.org/AlexBezsh/eatingpoll.svg?branch=master)](https://travis-ci.org/AlexBezsh/eatingpoll)
 
 # Eating Poll
-### Веб-приложение реализовано с минимальным графическим интерфейсом в соответствии с заданием:
-
+### The web application was developed in accordance with the task:
 Build a voting system for deciding where to have lunch.
 
  * 2 types of users: admin and regular users
@@ -13,9 +12,9 @@ Build a voting system for deciding where to have lunch.
  * Only one vote counted per user
  * If user votes again the same day:
     - If it is before 11:00 we asume that he changed his mind;
-    - If it is after 11:00 then it is too late, vote can't be changed _(изменить время окончания голосования можно в resources/app.properties)_.
+    - If it is after 11:00 then it is too late, vote can't be changed _(in application you can change voting end time in resources/app.properties)_.
     
 Each restaurant provides new menu each day.
 
-### Использованные технологии: 
-Spring MVC, Spring Data JPA + Hibernate, тесты - JUnit, база данных - HSQLDB, cборка приложения - Maven, запуск - Tomcat 9, версия JDK - 11. Графический интерфейс - JSP, JSTL, CSS. Cреда разработки - IntelliJ IDEA.
+### Programs and technologies used:
+Spring MVC, Spring Data JPA + Hibernate, Maven, Tomcat 9, tests - JUnit, database - HSQLDB, JDK version - 11. User interface (created for data display only) - JSP, JSTL, CSS. IDE - IntelliJ IDEA.
