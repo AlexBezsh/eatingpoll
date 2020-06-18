@@ -3,6 +3,9 @@
 <html>
 <head>
     <title>Eating Poll</title>
+    <style>
+        <%@include file="/WEB-INF/css/styles.css" %>
+    </style>
 </head>
 <body>
 <div align="center">
@@ -10,8 +13,11 @@
     <p><a href="${pageContext.request.contextPath}/admin/home?userEmail=${userEmail}&userPassword=${userPassword}">Back
         to main page</a></p>
     <br/>
-    <h4>All registered users:</h4>
-    <table border="1" cellpadding="5">
+    <div class="form-style-2-heading">
+        <h3>All registered users:</h3>
+    </div>
+    <table border="1" cellpadding="5" class="zui-table">
+        <thead>
         <tr>
             <th>ID</th>
             <th>Name</th>
@@ -19,6 +25,8 @@
             <th>Role</th>
             <th>Action</th>
         </tr>
+        </thead>
+        <tbody>
         <c:forEach items="${users}" var="user">
             <tr>
                 <td>${user.id}</td>
@@ -31,6 +39,7 @@
                 </td>
             </tr>
         </c:forEach>
+        </tbody>
     </table>
     <p>Note: You can't delete mock users. If you want to test "delete" action create a new account</p>
 </div>

@@ -1,10 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Eating Poll</title>
+    <style>
+        <%@include file="/WEB-INF/css/styles.css" %>
+    </style>
 </head>
 <body>
-<h3>${message}</h3>
+<div class="form-style-2-heading" align="center">
+    <h3>${message}</h3>
+</div>
 </body>
 </html>
