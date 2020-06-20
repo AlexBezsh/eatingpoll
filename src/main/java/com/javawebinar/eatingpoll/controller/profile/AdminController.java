@@ -1,7 +1,6 @@
 package com.javawebinar.eatingpoll.controller.profile;
 
 import com.javawebinar.eatingpoll.transfer.UserDto;
-import com.javawebinar.eatingpoll.util.AppUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -19,11 +18,13 @@ public class AdminController extends BasicProfilesController {
 
     @RequestMapping("/home")
     public ModelAndView home(@SessionAttribute("user") UserDto user) {
+        logger.info("loading home page for user: {}", user);
         return modelAndViewForHomePage(user);
     }
 
     @GetMapping("/update")
     public ModelAndView updateProfile(@SessionAttribute("user") UserDto user) {
+        logger.info("loading update form for user: {}", user);
         return modelAndViewForUpdatingUser(user.getEmail());
     }
 
@@ -38,14 +39,16 @@ public class AdminController extends BasicProfilesController {
 
     @Transactional
     @RequestMapping("/users/delete/{id}")
-    public String deleteUserByAdmin(@PathVariable String id) {
-        userService.deleteUserById(AppUtil.parseId(id));
+    public String deleteUserByAdmin(@PathVariable String email) {
+        logger.info("deleting user with email={} by admin", email);
+        userService.deleteUserByEmail(email);
         return "redirect:/admin/users";
     }
 
     @Transactional
     @RequestMapping("/vote")
     public String vote(@RequestParam String restaurantId, @SessionAttribute("user") UserDto user) {
+        logger.info("admin votes for a restaurant with id={}", restaurantId);
         userService.vote(restaurantId, user.getEmail());
         return "redirect:/admin/home";
     }
@@ -53,7 +56,7 @@ public class AdminController extends BasicProfilesController {
     @Transactional
     @RequestMapping("/discard")
     public String discardResults() {
-        logger.info("discarding results of voting");
+        logger.info("admin discards results of voting");
         userService.discardResults();
         return "redirect:/admin/home";
     }

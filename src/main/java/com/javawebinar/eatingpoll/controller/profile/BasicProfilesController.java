@@ -51,14 +51,15 @@ public class BasicProfilesController {
     public String login(@ModelAttribute("user") User user, HttpServletRequest httpRequest) {
         logger.info("user with email={} is logging in", user.getEmail());
         User userFromDB = userService.login(user);
+
         HttpSession session = httpRequest.getSession();
         session.setAttribute("user", new UserDto(userFromDB));
-
         return userFromDB.isAdmin() ? "redirect:/admin/home" : "redirect:/user/home";
     }
 
     @RequestMapping("/mock/login")
     public String loginForMockUsers(@RequestParam String email, HttpServletRequest httpRequest) {
+        logger.info("mock user with email={} is logging in", email);
         User user;
         if (email.equals("user1@gmail.com")
             || email.equals("user2@gmail.com")
@@ -93,7 +94,7 @@ public class BasicProfilesController {
     }
 
     @PostMapping("/update")
-    protected void updateUser(@ModelAttribute("user") User user, HttpServletRequest request, HttpServletResponse response) {
+    public void updateUser(@ModelAttribute("user") User user, HttpServletRequest request, HttpServletResponse response) {
         logger.info("saving updated user with email: {}", user.getEmail());
         userService.updateUser(user);
         request.setAttribute("message", "Your profile has been updated. Please log in to access your account");
@@ -105,7 +106,6 @@ public class BasicProfilesController {
     }
 
     protected ModelAndView modelAndViewForHomePage(UserDto user) {
-        logger.info("loading home page for user: {}", user);
         ModelAndView mav = new ModelAndView(user.isAdmin() ? "adminPage" : "userPage");
         mav.addObject("user", user);
         mav.addObject("restaurants", restaurantService.getAllRestaurants());
@@ -114,8 +114,6 @@ public class BasicProfilesController {
     }
 
     protected ModelAndView modelAndViewForUpdatingUser(String email) {
-        logger.info("loading update form for user with email: {}", email);
-        if (!userService.existsByEmail(email)) throw new BadRequestException("Wrong email");
         ModelAndView mav = new ModelAndView("updateUserForm");
         User user = new User();
         user.setEmail(email);
