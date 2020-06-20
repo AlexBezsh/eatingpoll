@@ -4,19 +4,20 @@ import com.javawebinar.eatingpoll.exceptions.BadRequestException;
 import com.javawebinar.eatingpoll.exceptions.EntityNotFoundException;
 import com.javawebinar.eatingpoll.exceptions.TimeException;
 import com.javawebinar.eatingpoll.model.Restaurant;
+import com.javawebinar.eatingpoll.model.user.Role;
 import com.javawebinar.eatingpoll.model.user.User;
 import com.javawebinar.eatingpoll.repository.RestaurantRepository;
 import com.javawebinar.eatingpoll.repository.UserRepository;
 import com.javawebinar.eatingpoll.transfer.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.javawebinar.eatingpoll.util.AppUtil.*;
 import static com.javawebinar.eatingpoll.util.AppUtil.checkEntity;
@@ -28,10 +29,11 @@ public class UserService {
     private static final String PROP_VOTING_FINISH_HOUR = "voting.finish.hour";
     private static final String PROP_VOTING_FINISH_MINUTE = "voting.finish.minute";
 
-    private final Object objectForSynchronization = new Object();
+    private UserRepository userRepository;
+    private RestaurantRepository restaurantRepository;
 
-    protected UserRepository userRepository;
-    protected RestaurantRepository restaurantRepository;
+    private PasswordEncoder passwordEncoder;
+    private final Object objectForSynchronization = new Object();
 
     @Autowired
     public void setEnv(Environment env) {
@@ -48,26 +50,28 @@ public class UserService {
         this.restaurantRepository = restaurantRepository;
     }
 
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     public List<User> getMockUsersForStartPage() {
-        List<User> mockUsers = List.of(userRepository.getById(1L), userRepository.getById(2L), userRepository.getById(3L));
-        for (User user : mockUsers) user.setPassword(user.getPassword());
-        return mockUsers;
+        return List.of(userRepository.getById(1L), userRepository.getById(2L), userRepository.getById(3L));
+    }
+
+    public User login(User user) {
+        User userFromDB = userRepository.findOneByEmail(user.getEmail());
+        if (userFromDB == null || !passwordEncoder.matches(user.getPassword(), userFromDB.getPassword()))
+            throw new BadRequestException("Wrong email or password. Please try again");
+        return userFromDB;
     }
 
     public void saveNewUser(User user) {
        // logger.info("registering user: {}", user);
-        String email = user.getEmail();
-        User registered = userRepository.findOneByEmail(email);
-        if (registered != null) throw new BadRequestException("User with this email is already registered");
-        userRepository.saveAndFlush(checkEntity(user, user.getName(), email, user.getPassword(), user.getRole()));
-    }
-
-    public User getUserIfExists(String email, String password) {
-        return userRepository.findOneByEmailAndPassword(email, password);
-    }
-
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+        if (existsByEmail(user.getEmail())) throw new BadRequestException("User with this email is already registered");
+        checkEntity(user, user.getName(), user.getEmail(), user.getPassword(), user.getRole());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.saveAndFlush(user);
     }
 
     public void updateUser(User user) {
@@ -77,7 +81,7 @@ public class UserService {
         User userFromDB = userRepository.findOneByEmail(email);
         if (userFromDB == null) throw new EntityNotFoundException("There is no user with email=" + email + " in repository");
         userFromDB.setName(user.getName());
-        userFromDB.setPassword(user.getPassword());
+        userFromDB.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.saveAndFlush(userFromDB);
     }
 
@@ -140,11 +144,10 @@ public class UserService {
 
     public List<UserDto> getAllUsers() {
         List<User> usersFromDB = userRepository.findAll();
-        usersFromDB.removeIf(User::isAdmin);
-
-        List<UserDto> users = new ArrayList<>();
-        usersFromDB.forEach((a) -> users.add(new UserDto(a)));
-        return users;
+        return usersFromDB.stream()
+                .filter((a) -> a.getRole() == Role.USER)
+                .map(UserDto::new)
+                .collect(Collectors.toList());
     }
 
     public User getUserByEmail(String email) {
@@ -153,9 +156,7 @@ public class UserService {
         return user;
     }
 
-    public List<Restaurant> getAllRestaurants() {
-        List<Restaurant> restaurants = restaurantRepository.findAll();
-        restaurants.sort(Comparator.comparingInt(Restaurant::getVotesCount).reversed());
-        return restaurants;
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

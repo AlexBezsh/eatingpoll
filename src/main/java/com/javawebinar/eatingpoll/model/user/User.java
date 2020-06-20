@@ -18,7 +18,7 @@ public class User extends AbstractEntity {
     private String email;
 
     @NotBlank
-    @Size(min = 5, max = 20)
+    @Size(min = 5, max = 60)
     @Column(name = "password")
     private String password;
 

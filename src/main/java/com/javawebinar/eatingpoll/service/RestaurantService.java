@@ -10,6 +10,7 @@ import com.javawebinar.eatingpoll.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static com.javawebinar.eatingpoll.util.AppUtil.*;
@@ -34,6 +35,12 @@ public class RestaurantService {
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public List<Restaurant> getAllRestaurants() {
+        List<Restaurant> restaurants = restaurantRepository.findAll();
+        restaurants.sort(Comparator.comparingInt(Restaurant::getVotesCount).reversed());
+        return restaurants;
     }
 
     public void save(Restaurant restaurant) {
@@ -62,6 +69,4 @@ public class RestaurantService {
         } else
             throw new EntityNotFoundException("There is no restaurant with id=" + parsedRestaurantId + " in repository");
     }
-
-
 }

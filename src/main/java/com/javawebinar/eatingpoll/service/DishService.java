@@ -45,7 +45,7 @@ public class DishService {
     public Dish getDishToUpdate(String dishId) {
         long parsedDishId = parseId(dishId);
         if (!dishRepository.existsById(parsedDishId)) throw new EntityNotFoundException("There is no dish with id=" + dishId + "in repository");
-        return dishRepository.findById(parseId(dishId)).get();
+        return dishRepository.findById(parsedDishId).get();
     }
 
     public void deleteById(String dishId) {

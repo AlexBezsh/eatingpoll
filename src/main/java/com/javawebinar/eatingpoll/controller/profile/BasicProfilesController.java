@@ -4,6 +4,7 @@ import com.javawebinar.eatingpoll.exceptions.BadRequestException;
 import com.javawebinar.eatingpoll.exceptions.EntityNotFoundException;
 import com.javawebinar.eatingpoll.model.Restaurant;
 import com.javawebinar.eatingpoll.model.user.User;
+import com.javawebinar.eatingpoll.service.RestaurantService;
 import com.javawebinar.eatingpoll.service.UserService;
 import com.javawebinar.eatingpoll.transfer.UserDto;
 import org.slf4j.Logger;
@@ -25,10 +26,16 @@ public class BasicProfilesController {
     private final Logger logger = LoggerFactory.getLogger(BasicProfilesController.class);
 
     protected UserService userService;
+    private RestaurantService restaurantService;
 
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    @Autowired
+    public void setRestaurantService(RestaurantService restaurantService) {
+        this.restaurantService = restaurantService;
     }
 
     @RequestMapping("/")
@@ -42,11 +49,8 @@ public class BasicProfilesController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute("user") User user, HttpServletRequest httpRequest) {
-        logger.info("user: {} is logging in", user);
-
-        User userFromDB = userService.getUserIfExists(user.getEmail(), user.getPassword());
-        if (userFromDB == null) throw new BadRequestException("Wrong email or password");
-
+        logger.info("user with email={} is logging in", user.getEmail());
+        User userFromDB = userService.login(user);
         HttpSession session = httpRequest.getSession();
         session.setAttribute("user", new UserDto(userFromDB));
 
@@ -61,12 +65,10 @@ public class BasicProfilesController {
             || email.equals("admin1@gmail.com"))
             user = userService.getUserByEmail(email);
         else throw new BadRequestException("Invalid mock data");
-
         if (user == null) throw new EntityNotFoundException("There is no mock user with email " + email + " in database");
 
         HttpSession session = httpRequest.getSession();
         session.setAttribute("user", new UserDto(user));
-
         return user.isAdmin() ? "redirect:/admin/home" : "redirect:/user/home";
     }
 
@@ -106,7 +108,7 @@ public class BasicProfilesController {
         logger.info("loading home page for user: {}", user);
         ModelAndView mav = new ModelAndView(user.isAdmin() ? "adminPage" : "userPage");
         mav.addObject("user", user);
-        mav.addObject("restaurants", userService.getAllRestaurants());
+        mav.addObject("restaurants", restaurantService.getAllRestaurants());
         if (user.isAdmin()) mav.addObject("restaurant", new Restaurant());
         return mav;
     }
