@@ -11,25 +11,25 @@
 <body>
 <div align="center">
     <div class="form-style-2">
-        <h2>Eating Poll</h2>
+        <h1>Eating Poll</h1>
         <div class="form-style-2-heading">
-            <h2>${user.id == null ? "New Profile" : "Update Profile"}</h2>
+            <h2>Update Profile</h2>
         </div>
-        <form:form action="${pageContext.request.contextPath}/save" method="post" modelAttribute="user">
+        <form:form action="${pageContext.request.contextPath}/update" method="post" modelAttribute="user">
             <table border="0" cellpadding="5">
                 <tr>
-                    <td>${user.id == null ? "Name" : "Set new name:"}</td>
+                    <td>New name:</td>
                     <td><form:input path="name" value="${user.name}"/></td>
-                    <td><form:hidden path="id" value="${user.id}"/></td>
-                    <td><form:hidden path="role" value="${user.role}"/></td>
                 </tr>
-                <tr ${user.id != null ? "hidden" : ""}>
-                    <td>Email:</td>
+                <tr hidden>
                     <td><form:input path="email" value="${user.email}"/></td>
                 </tr>
                 <tr>
-                    <td>${user.id == null ? "Password:" : "Set new password:"}</td>
+                    <td>New password:</td>
                     <td><form:password path="password" value="${user.password}"/></td>
+                </tr>
+                <tr>
+                    Enter previous name or password if you don't want to change it
                 </tr>
                 <tr>
                     <td colspan="2"><input type="submit" value="Save"></td>

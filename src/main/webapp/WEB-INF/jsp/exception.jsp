@@ -2,9 +2,7 @@
 <html>
 <head>
     <title>Eating Poll</title>
-    <style>
-        <%@include file="/WEB-INF/css/styles.css" %>
-    </style>
+    <style><%@include file="/WEB-INF/css/styles.css" %></style>
 </head>
 <body>
 <div class="form-style-2-heading" align="center">

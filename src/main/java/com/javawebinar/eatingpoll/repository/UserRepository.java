@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
-    User findOneByEmailAndPassword(String email, String password);
-    User findOneByEmail(String email);
-    List<User> findAllByChosenRestaurantId(Long chosenRestaurantId);
     User getById(Long id);
+    boolean existsByEmail(String email);
+    User findOneByEmail(String email);
+    User findOneByEmailAndPassword(String email, String password);
+    List<User> findAllByChosenRestaurantId(Long chosenRestaurantId);
 }

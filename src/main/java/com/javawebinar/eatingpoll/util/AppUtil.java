@@ -7,7 +7,6 @@ import com.javawebinar.eatingpoll.model.user.Role;
 import com.javawebinar.eatingpoll.model.user.User;
 
 import java.util.ArrayList;
-import java.util.Base64;
 
 public class AppUtil {
 
@@ -51,17 +50,5 @@ public class AppUtil {
         if (name == null || name.isBlank()) throw new BadRequestException("Empty name");
         if (name.length() < 2 || name.length() > 60) throw new BadRequestException("Name must be between 2 and 60 characters");
         return name;
-    }
-
-    //Just to hide password.
-    public static String encode(String password) {
-        password = Base64.getEncoder().encodeToString(password.getBytes());
-        return password;
-    }
-
-    public static String decode(String password) {
-        byte[] actualPassword = Base64.getDecoder().decode(password);
-        password = new String(actualPassword);
-        return password;
     }
 }

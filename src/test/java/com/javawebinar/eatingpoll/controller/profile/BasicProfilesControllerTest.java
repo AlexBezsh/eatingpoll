@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
 import static com.javawebinar.eatingpoll.TestData.*;
-import static com.javawebinar.eatingpoll.util.AppUtil.decode;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -28,7 +27,7 @@ public class BasicProfilesControllerTest extends AbstractControllerTest {
     @Test
     public void login() throws Exception {
         User user = MOCK_USER1;
-        user.setPassword(decode(MOCK_USER1.getPassword()));
+        user.setPassword(MOCK_USER1.getPassword());
 
         mockMvc.perform(post("/login")
                 .contentType(MediaType.APPLICATION_JSON)

@@ -4,19 +4,16 @@
 <html>
 <head>
     <title>Eating Poll</title>
-    <style>
-        <%@include file="/WEB-INF/css/styles.css" %>
-    </style>
+    <style><%@include file="/WEB-INF/css/styles.css" %></style>
 </head>
 <body>
 <div align="center">
     <h1>Eating Poll</h1>
-    <h2><a href="${pageContext.request.contextPath}/create">Sigh up</a></h2>
+    <h4>${pageContext.request.getAttribute("message") != null ? pageContext.request.getAttribute("message") : ""}</h4>
+    <h2><a href="${pageContext.request.contextPath}/register">Sigh up</a></h2>
     <div class=form-style-2>
-        <div class="form-style-2-heading">
-            <h3>Log in:</h3>
-        </div>
-        <form:form action="${pageContext.request.contextPath}/login" modelAttribute="user">
+        <div class="form-style-2-heading"><h3>Log in:</h3></div>
+        <form:form action="${pageContext.request.contextPath}/login" modelAttribute="userToLogin">
             <table border="0" cellpadding="5">
                 <tr>
                     <td>Email:</td>
@@ -33,32 +30,12 @@
         </form:form>
     </div>
     <br/>
-    <div class="form-style-2">
-        <div class="form-style-2-heading">
-            <h4>Sigh up as admin (enter "password"):</h4>
-        </div>
-        <form:form action="${pageContext.request.contextPath}/create" modelAttribute="user">
-            <table border="0" cellpadding="5">
-                <tr>
-                    <td>Password:</td>
-                    <td><form:password path="password"/></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><input type="submit" value="Sigh up"></td>
-                </tr>
-            </table>
-        </form:form>
-    </div>
-    <br/>
     <div class="form-style-2-heading">
         <h4>Choose mock profile:</h4>
         <c:forEach items="${users}" var="user">
-            <li>
-                <a href="${pageContext.request.contextPath}/${user.admin ? "admin" : "user"}/home?userEmail=${user.email}&userPassword=${user.password}">${user.name}
-                    - Role: ${user.role}</a></li>
+            <li><a href="${pageContext.request.contextPath}/mock/login?email=${user.email}">${user.name} - Role: ${user.role}</a></li>
         </c:forEach>
     </div>
-
 </div>
 </body>
 </html>
