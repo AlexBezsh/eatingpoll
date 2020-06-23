@@ -38,8 +38,8 @@ public class AdminController extends BasicProfilesController {
     }
 
     @Transactional
-    @RequestMapping("/users/delete/{id}")
-    public String deleteUserByAdmin(@PathVariable String email) {
+    @RequestMapping("/users/delete")
+    public String deleteUserByAdmin(@RequestParam String email) {
         logger.info("deleting user with email={} by admin", email);
         userService.deleteUserByEmail(email);
         return "redirect:/admin/users";

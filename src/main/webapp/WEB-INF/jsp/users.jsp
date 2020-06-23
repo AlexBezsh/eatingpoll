@@ -30,7 +30,7 @@
                 <td>${user.role}</td>
                 <td>
                     <a ${(user.email.equals("user1@gmail.com") || user.email.equals("user2@gmail.com")|| user.email.equals("admin1@gmail.com")) ? "hidden" : ""}
-                            href="${pageContext.request.contextPath}/admin/users/delete/${user.id}">Delete</a>
+                            href="${pageContext.request.contextPath}/admin/users/delete?email=${user.email}">Delete</a>
                 </td>
             </tr>
         </c:forEach>

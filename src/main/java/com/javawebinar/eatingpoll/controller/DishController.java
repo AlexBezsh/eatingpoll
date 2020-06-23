@@ -29,16 +29,16 @@ public class DishController {
     }
 
     @PostMapping(value = "/save")
-    public String save(@ModelAttribute("dish") Dish dish) {
-        logger.info("saving dish: {}", dish);
-        dishService.save(dish);
+    public String save(@ModelAttribute("dish") Dish dish, @RequestParam String restaurantId) {
+        logger.info("saving dish: {} in restaurant with id={}", dish, restaurantId);
+        dishService.save(dish, restaurantId);
         return "redirect:/admin/home";
     }
 
     @RequestMapping(value = "/update/{dishId}")
     public ModelAndView getDishToUpdate(@PathVariable String dishId) {
         logger.info("updating dish with id={}", dishId);
-        return modelAndViewForDishForm(dishService.getDishToUpdate(dishId));
+        return modelAndViewForDishForm(dishService.getDishForUpdate(dishId));
     }
 
     @RequestMapping(value = "/delete/{dishId}")
@@ -51,6 +51,7 @@ public class DishController {
     private ModelAndView modelAndViewForDishForm(Dish dish) {
         ModelAndView mav = new ModelAndView("dishForm");
         mav.addObject("dish", dish);
+        mav.addObject("restaurantId", dish.getRestaurant().getId());
         return mav;
     }
 }

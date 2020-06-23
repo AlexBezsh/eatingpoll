@@ -41,8 +41,7 @@
                 </table>
             </form:form>
         </div>
-        <p>Number of Votes: ${restaurant.votesCount} <a
-                href="${pageContext.request.contextPath}/admin/vote?restaurantId=${restaurant.id}">Choose</a></p>
+        <p>Number of Votes: ${restaurant.votesCount} <a href="${pageContext.request.contextPath}/admin/vote?restaurantId=${restaurant.id}">Choose</a></p>
         <table border="1" cellpadding="5" class="zui-table">
             <thead>
             <tr>

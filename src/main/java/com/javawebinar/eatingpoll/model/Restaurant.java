@@ -12,7 +12,7 @@ public class Restaurant extends AbstractEntity {
     @Column(name = "votes_count")
     private Integer votesCount = 0;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private List<Dish> dishes;
 
@@ -49,7 +49,6 @@ public class Restaurant extends AbstractEntity {
                 "id=" + id +
                 ", name=" + name +
                 ", votesCount=" + votesCount +
-                ", dishes=" + dishes +
                 '}';
     }
 }

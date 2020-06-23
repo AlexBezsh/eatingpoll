@@ -1,5 +1,6 @@
 package com.javawebinar.eatingpoll.transfer;
 
+import com.javawebinar.eatingpoll.model.Restaurant;
 import com.javawebinar.eatingpoll.model.user.Role;
 import com.javawebinar.eatingpoll.model.user.User;
 
@@ -9,14 +10,14 @@ public class UserDto {
     private String name;
     private String email;
     private Role role;
-    private Long chosenRestaurantId;
+    private Restaurant chosenRestaurant;
 
     public UserDto(User user) {
         this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
         this.role = user.getRole();
-        this.chosenRestaurantId = user.getChosenRestaurantId();
+        this.chosenRestaurant = user.getChosenRestaurant();
     }
 
     public Long getId() {
@@ -51,12 +52,12 @@ public class UserDto {
         this.role = role;
     }
 
-    public Long getChosenRestaurantId() {
-        return chosenRestaurantId;
+    public Restaurant getChosenRestaurant() {
+        return chosenRestaurant;
     }
 
-    public void setChosenRestaurantId(Long chosenRestaurantId) {
-        this.chosenRestaurantId = chosenRestaurantId;
+    public void setChosenRestaurant(Restaurant chosenRestaurant) {
+        this.chosenRestaurant = chosenRestaurant;
     }
 
     public boolean isAdmin() {
@@ -69,7 +70,6 @@ public class UserDto {
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", role=" + role +
-                ", chosenRestaurantId=" + chosenRestaurantId +
                 '}';
     }
 }

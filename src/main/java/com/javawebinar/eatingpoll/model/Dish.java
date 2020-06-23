@@ -8,20 +8,20 @@ import javax.validation.constraints.NotNull;
 public class Dish extends AbstractEntity {
 
     @NotNull
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private Double price;
 
     @NotNull
-    @Column(name = "restaurant_id")
-    @JoinColumn(table = "restaurant", name = "id")
-    private Long restaurantId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", updatable = false)
+    private Restaurant restaurant;
 
     public Dish() {}
 
-    public Dish(Long id, String name, Double price, Long restaurantId) {
+    public Dish(Long id, String name, Double price, Restaurant restaurant) {
         super(id, name);
         this.price = price;
-        this.restaurantId = restaurantId;
+        this.restaurant = restaurant;
     }
 
     public Double getPrice() {
@@ -32,12 +32,12 @@ public class Dish extends AbstractEntity {
         this.price = price;
     }
 
-    public Long getRestaurantId() {
-        return restaurantId;
+    public Restaurant getRestaurant() {
+        return restaurant;
     }
 
-    public void setRestaurantId(long restaurantId) {
-        this.restaurantId = restaurantId;
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     @Override
@@ -46,7 +46,6 @@ public class Dish extends AbstractEntity {
                 "id=" + id +
                 ", name=" + name +
                 ", price=" + price +
-                ", restaurantId=" + restaurantId +
                 '}';
     }
 }

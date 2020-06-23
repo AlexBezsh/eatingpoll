@@ -8,14 +8,14 @@ import javax.validation.constraints.NotBlank;
 public abstract class AbstractEntity {
 
     @Id
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id")
     @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     protected Long id;
 
     @NotBlank
     @Size(min = 2, max = 60)
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     protected String name;
 
     public AbstractEntity() {}

@@ -19,7 +19,7 @@ CREATE TABLE user
     email                     VARCHAR(255)  NOT NULL,
     password                  VARCHAR(60)   NOT NULL,
     role                      VARCHAR(5)    NOT NULL,
-    chosen_restaurant_id      BIGINT        REFERENCES restaurant(id)
+    chosen_restaurant_id      BIGINT        REFERENCES restaurant(id) ON DELETE SET NULL
 );
 CREATE UNIQUE INDEX users_unique_email_idx ON user (email);
 

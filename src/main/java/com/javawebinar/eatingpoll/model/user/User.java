@@ -1,11 +1,11 @@
 package com.javawebinar.eatingpoll.model.user;
 
 import com.javawebinar.eatingpoll.model.AbstractEntity;
+import com.javawebinar.eatingpoll.model.Restaurant;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -19,26 +19,25 @@ public class User extends AbstractEntity {
 
     @NotBlank
     @Size(min = 5, max = 60)
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @NotNull
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(name = "chosen_restaurant_id")
-    @JoinColumn(table = "restaurant", name = "id")
-    private Long chosenRestaurantId; //https://stackoverflow.com/questions/6311776/hibernate-foreign-keys-instead-of-entities
+    @JoinColumn(name = "chosen_restaurant_id")
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    private Restaurant chosenRestaurant;
 
     public User() {}
 
-    public User(Long id, String name, String email, String password, Role role, Long chosenRestaurantId) {
+    public User(Long id, String name, String email, String password, Role role, Restaurant chosenRestaurant) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.role = role;
-        this.chosenRestaurantId = chosenRestaurantId;
+        this.chosenRestaurant = chosenRestaurant;
     }
 
     public String getEmail() {
@@ -65,16 +64,12 @@ public class User extends AbstractEntity {
         this.role = role;
     }
 
-    public boolean hasVoted() {
-        return chosenRestaurantId != null;
+    public void setChosenRestaurant(Restaurant chosenRestaurant) {
+        this.chosenRestaurant = chosenRestaurant;
     }
 
-    public void setChosenRestaurantId(Long chosenRestaurantId) {
-        this.chosenRestaurantId = chosenRestaurantId;
-    }
-
-    public Long getChosenRestaurantId() {
-        return chosenRestaurantId;
+    public Restaurant getChosenRestaurant() {
+        return chosenRestaurant;
     }
 
     public boolean isAdmin() {
@@ -88,7 +83,6 @@ public class User extends AbstractEntity {
                 ", name=" + name +
                 ", email='" + email + '\'' +
                 ", role=" + role +
-                ", chosenRestaurantId=" + chosenRestaurantId +
                 '}';
     }
 }
