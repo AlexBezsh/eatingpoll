@@ -7,7 +7,6 @@ import com.javawebinar.eatingpoll.model.user.User;
 import com.javawebinar.eatingpoll.transfer.UserDto;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class TestData {
 
@@ -18,8 +17,6 @@ public class TestData {
     public static final UserDto MOCK_USER1_DTO = new UserDto(MOCK_USER1);
     public static final UserDto MOCK_USER2_DTO = new UserDto(MOCK_USER2);
     public static final UserDto MOCK_ADMIN1_DTO = new UserDto(MOCK_ADMIN1);
-
-    public static final List<User> MOCK_USERS = List.of(MOCK_USER1, MOCK_USER2, MOCK_ADMIN1);
 
     public static final Restaurant MOCK_RESTAURANT1 = new Restaurant();
     public static final Restaurant MOCK_RESTAURANT2 = new Restaurant();
@@ -39,7 +36,6 @@ public class TestData {
         MOCK_RESTAURANT2.setDishes(Arrays.asList(MOCK_DISH3, MOCK_DISH4));
     }
 
-    public static final User ADDITIONAL_MOCK_ADMIN = new User(null, "Admin2", "admin2@gmail.com", "YWRtaW4y", Role.USER, null);
     public static final Restaurant ADDITIONAL_MOCK_RESTAURANT = new Restaurant(null, "Additional restaurant", null);
     public static final Dish ADDITIONAL_MOCK_DISH = new Dish(null, "Juice", 5.0, MOCK_RESTAURANT2);
 }
