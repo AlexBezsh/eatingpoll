@@ -17,12 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     void deleteByEmail(String email);
 
     @Modifying
-    @Transactional
-    @Query(value = "UPDATE User u set u.name = ?1, u.password = ?2 where u.email = ?3")
-    void updateUserProfileByEmail(String name, String password, String email);
-
-    @Modifying
-    @Transactional
     @Query(value = "UPDATE User u SET u.chosenRestaurant = null")
     void clearAllChosenRestaurants();
 

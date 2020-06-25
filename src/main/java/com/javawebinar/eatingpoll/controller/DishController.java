@@ -29,27 +29,33 @@ public class DishController {
     }
 
     @PostMapping(value = "/save")
-    public String save(@ModelAttribute("dish") Dish dish, @RequestParam String restaurantId) {
+    public String saveNewDish(@ModelAttribute("dish") Dish dish, @RequestParam String restaurantId) {
         logger.info("saving dish: {} in restaurant with id={}", dish, restaurantId);
-        dishService.save(dish, restaurantId);
+        dishService.saveNewDish(dish, restaurantId);
         return "redirect:/admin/home";
     }
 
-    @RequestMapping(value = "/update/{dishId}")
-    public ModelAndView getDishToUpdate(@PathVariable String dishId) {
+    @GetMapping(value = "/update")
+    public ModelAndView getDishForUpdate(@RequestParam String dishId) {
         logger.info("updating dish with id={}", dishId);
         return modelAndViewForDishForm(dishService.getDishForUpdate(dishId));
     }
 
-    @RequestMapping(value = "/delete/{dishId}")
-    public String deleteById(@PathVariable String dishId) {
+    @PostMapping(value = "/update")
+    public String updateDish(@ModelAttribute Dish dish, @RequestParam String restaurantId) {
+        dishService.updateDish(dish, restaurantId);
+        return "redirect:/admin/home";
+    }
+
+    @RequestMapping(value = "/delete")
+    public String deleteById(@RequestParam String dishId) {
         logger.info("deleting dish with id={}", dishId);
-        dishService.deleteById(dishId);
+        dishService.deleteDishById(dishId);
         return "redirect:/admin/home";
     }
 
     private ModelAndView modelAndViewForDishForm(Dish dish) {
-        ModelAndView mav = new ModelAndView("dishForm");
+        ModelAndView mav = new ModelAndView(dish.getId() == null ? "newDishForm" : "updateDishForm");
         mav.addObject("dish", dish);
         mav.addObject("restaurantId", dish.getRestaurant().getId());
         return mav;

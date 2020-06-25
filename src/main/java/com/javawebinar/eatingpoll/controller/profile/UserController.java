@@ -7,14 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.transaction.Transactional;
-
 @Controller
 @RequestMapping("/user")
 public class UserController extends BasicProfilesController {
 
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
-
 
     @RequestMapping("/home")
     public ModelAndView home(@SessionAttribute("user") UserDto user) {
@@ -28,7 +25,6 @@ public class UserController extends BasicProfilesController {
         return modelAndViewForUpdatingUser(user.getEmail());
     }
 
-    @Transactional
     @RequestMapping("/delete")
     public String deleteProfile(@SessionAttribute("user") UserDto user) {
         logger.info("user with email={} deletes his account", user.getEmail());
@@ -36,7 +32,6 @@ public class UserController extends BasicProfilesController {
         return "redirect:/";
     }
 
-    @Transactional
     @RequestMapping("/vote")
     public String vote(@RequestParam String restaurantId, @SessionAttribute("user") UserDto user) {
         logger.info("user with email={} votes for a restaurant with id={}", user.getEmail(), restaurantId);

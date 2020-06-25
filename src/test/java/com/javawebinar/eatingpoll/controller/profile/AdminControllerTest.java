@@ -2,6 +2,7 @@ package com.javawebinar.eatingpoll.controller.profile;
 
 import com.javawebinar.eatingpoll.controller.AbstractControllerTest;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.javawebinar.eatingpoll.TestData.*;
 import static org.hamcrest.Matchers.*;
@@ -14,7 +15,10 @@ public class AdminControllerTest extends AbstractControllerTest {
 
     @Test
     public void adminHomePage() throws Exception {
-        mockMvc.perform(get("/admin/home?userEmail=" + MOCK_ADMIN1.getEmail() + "&userPassword=" + MOCK_ADMIN1.getPassword()))
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/admin/home")
+                .sessionAttr("user", MOCK_ADMIN1_DTO))
                 .andExpect(status().isOk())
                 .andExpect(view().name("adminPage"))
                 .andExpect(model().attribute("restaurants", hasSize(2)))
@@ -24,7 +28,10 @@ public class AdminControllerTest extends AbstractControllerTest {
 
     @Test
     public void getUsers() throws Exception {
-        mockMvc.perform(get("/admin/users?userEmail=" + MOCK_ADMIN1.getEmail() + "&userPassword=" + MOCK_ADMIN1.getPassword()))
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/admin/users")
+                .sessionAttr("user", MOCK_ADMIN1_DTO))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("users"))
                 .andExpect(model().attribute("users", hasItem(

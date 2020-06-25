@@ -10,7 +10,7 @@
 <div align="center">
     <h2>Eating Poll</h2>
     <div class="form-style-2">
-        <div class="form-style-2-heading"><h2>${dish.id == null ? "New Dish" : "Update Dish"}</h2></div>
+        <div class="form-style-2-heading"><h2>New Dish</h2></div>
         <form:form action="${pageContext.request.contextPath}/admin/dish/save?restaurantId=${restaurantId}" method="post" modelAttribute="dish">
             <table border="0" cellpadding="5">
                 <tr>

@@ -82,7 +82,7 @@ public class BasicProfilesController {
     }
 
     @RequestMapping("/save")
-    public void saveUser(@ModelAttribute("user") User user, HttpServletRequest request, HttpServletResponse response) {
+    public void saveNewUser(@ModelAttribute("user") User user, HttpServletRequest request, HttpServletResponse response) {
         logger.info("saving new user with email: {}", user.getEmail());
         userService.saveNewUser(user);
         request.setAttribute("message", "You have successfully registered. Please log in to access your account");
@@ -97,6 +97,7 @@ public class BasicProfilesController {
     public void updateUser(@ModelAttribute("user") User user, HttpServletRequest request, HttpServletResponse response) {
         logger.info("saving updated user with email: {}", user.getEmail());
         userService.updateUser(user);
+        request.getSession().invalidate();
         request.setAttribute("message", "Your profile has been updated. Please log in to access your account");
         try {
             request.getServletContext().getRequestDispatcher(request.getContextPath() + "/").forward(request, response);

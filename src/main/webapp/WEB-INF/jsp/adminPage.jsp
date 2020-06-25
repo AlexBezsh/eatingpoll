@@ -56,8 +56,8 @@
                     <td>${dish.name}</td>
                     <td>${dish.price.toString().matches("\\d+\\.\\d{1}") ? dish.price.toString().concat("0") : dish.price.toString()}</td>
                     <td>
-                        <a href="${pageContext.request.contextPath}/admin/dish/update/${dish.id}">Update</a>
-                        <a href="${pageContext.request.contextPath}/admin/dish/delete/${dish.id}">Delete</a>
+                        <a href="${pageContext.request.contextPath}/admin/dish/update?dishId=${dish.id}">Update</a>
+                        <a href="${pageContext.request.contextPath}/admin/dish/delete?dishId=${dish.id}">Delete</a>
                     </td>
                 </tr>
                 </tbody>

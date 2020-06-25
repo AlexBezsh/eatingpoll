@@ -19,14 +19,14 @@ public abstract class AbstractControllerTest {
     protected static final String PROP_VOTING_FINISH_HOUR = "voting.finish.hour";
     protected static final String PROP_VOTING_FINISH_MINUTE = "voting.finish.minute";
 
-    protected Environment env;
+    protected Environment environment;
 
     public WebApplicationContext context;
     public MockMvc mockMvc;
 
     @Autowired
-    public void setEnv(Environment env) {
-        this.env = env;
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
     }
 
     @Autowired

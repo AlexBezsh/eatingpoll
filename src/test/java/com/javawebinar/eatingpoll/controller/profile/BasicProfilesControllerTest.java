@@ -1,7 +1,6 @@
 package com.javawebinar.eatingpoll.controller.profile;
 
 import com.javawebinar.eatingpoll.controller.AbstractControllerTest;
-import com.javawebinar.eatingpoll.model.user.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -17,25 +16,23 @@ public class BasicProfilesControllerTest extends AbstractControllerTest {
 
     @Test
     public void startPage() throws Exception {
+
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
                 .andExpect(model().attribute("users", hasSize(3)))
-                .andExpect(model().attributeExists("user"));
+                .andExpect(model().attributeExists("userToLogin"));
     }
 
     @Test
     public void login() throws Exception {
-        User user = MOCK_USER1;
-        user.setPassword(MOCK_USER1.getPassword());
 
         mockMvc.perform(post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .flashAttr("user", user))
-                .andExpect(status().isOk())
-                .andExpect(view().name("userPage"))
-                .andExpect(model().attribute("restaurants", hasSize(2)))
-                .andExpect(model().attributeDoesNotExist("restaurant"))
-                .andExpect(model().attribute("user", hasProperty("id", is(MOCK_USER1.getId()))));
+                .flashAttr("user", MOCK_USER1))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/user/home"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attribute("user", hasProperty("id", is(MOCK_USER1_DTO.getId()))));
     }
 }

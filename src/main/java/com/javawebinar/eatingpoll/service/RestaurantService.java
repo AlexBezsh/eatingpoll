@@ -3,8 +3,6 @@ package com.javawebinar.eatingpoll.service;
 import com.javawebinar.eatingpoll.exceptions.BadRequestException;
 import com.javawebinar.eatingpoll.model.Restaurant;
 import com.javawebinar.eatingpoll.repository.RestaurantRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +16,6 @@ import static com.javawebinar.eatingpoll.util.AppUtil.*;
 @Service
 public class RestaurantService {
 
-    private final Logger logger = LoggerFactory.getLogger(RestaurantService.class);
-
     private RestaurantRepository restaurantRepository;
 
     @Autowired
@@ -28,22 +24,22 @@ public class RestaurantService {
     }
 
     public List<Restaurant> getAllRestaurants() {
-        logger.debug("loading all restaurants from database");
         List<Restaurant> restaurants = restaurantRepository.findAll();
         restaurants.sort(Comparator.comparingInt(Restaurant::getVotesCount).reversed());
         return restaurants;
     }
 
-    public void save(Restaurant restaurant) {
-        logger.debug("saving new restaurant: {}", restaurant);
+    @Transactional
+    public void saveNewRestaurant(Restaurant restaurant) {
         if (restaurantRepository.existsByName(restaurant.getName()))
             throw new BadRequestException("Restaurant with this name already exists");
-        restaurantRepository.saveAndFlush(checkEntity(restaurant, restaurant.getName()));
+        restaurantRepository.saveAndFlush(getCheckedRestaurant(restaurant));
     }
 
-    public void update(Restaurant restaurant) {
-        logger.debug("updating restaurant with id={}", restaurant.getId());
-        String newName = checkName(restaurant.getName());
+    @Transactional
+    public void updateRestaurant(Restaurant restaurant) {
+        String newName = restaurant.getName();
+        checkName(newName);
         if (restaurantRepository.existsByName(newName))
             throw new BadRequestException("Restaurant with this name already exists");
 
@@ -56,9 +52,7 @@ public class RestaurantService {
         restaurantRepository.saveAndFlush(restaurantFromDB);
     }
 
-    @Transactional
     public void deleteById(String restaurantId) {
-        logger.debug("deleting restaurant with id={} in three steps", restaurantId);
         restaurantRepository.deleteById(parseId(restaurantId));
     }
 }

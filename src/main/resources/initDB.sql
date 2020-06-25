@@ -32,9 +32,9 @@ CREATE TABLE dish (
 );
 
 INSERT INTO user (name, email, password, role, chosen_restaurant_id)
-VALUES ('User1', 'user1@gmail.com', 'user1', 'USER', null),
-       ('User2', 'user2@gmail.com', 'user2', 'USER', null),
-       ('Admin1', 'admin1@gmail.com', 'admin1', 'ADMIN', null);
+VALUES ('User1', 'user1@gmail.com', '$2y$12$4Ze4dPxvc/iltIpMKNhY1OtuKoq1ZhIkE6oPL273tfauKImiDtShu', 'USER', null),
+       ('User2', 'user2@gmail.com', '$2y$12$Z5qVocXKClVIQDvL08s7ROu4IEvcOdZM5h2hERXsfp7tqV71lhsje', 'USER', null),
+       ('Admin1', 'admin1@gmail.com', '$2y$12$Y0xiSfiPOkEdz5gRWDdMPOr.69ouTbjFy/BkiM.U4yW5FZ6txgsOK', 'ADMIN', null);
 
 INSERT INTO restaurant(name, votes_count)
 VALUES ('Some restaurant', 0),

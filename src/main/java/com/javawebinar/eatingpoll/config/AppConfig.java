@@ -38,16 +38,16 @@ public class AppConfig {
     private static final String PROP_HIBERNATE_DIALECT = "hibernate.dialect";
 
     @Resource
-    private Environment env;
+    private Environment environment;
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan(env.getRequiredProperty(PROP_ENTITY_PACKAGES));
+        em.setPackagesToScan(environment.getRequiredProperty(PROP_ENTITY_PACKAGES));
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setShowSql(env.getRequiredProperty(PROP_HIBERNATE_SHOW_SQL).equals("true"));
+        vendorAdapter.setShowSql(environment.getRequiredProperty(PROP_HIBERNATE_SHOW_SQL).equals("true"));
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(additionalProperties());
         return em;
@@ -56,10 +56,10 @@ public class AppConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getRequiredProperty(PROP_DB_DRIVER));
-        dataSource.setUrl(env.getRequiredProperty(PROP_DB_URL));
-        dataSource.setUsername(env.getRequiredProperty(PROP_DB_USERNAME));
-        dataSource.setPassword(env.getRequiredProperty(PROP_DB_PASSWORD));
+        dataSource.setDriverClassName(environment.getRequiredProperty(PROP_DB_DRIVER));
+        dataSource.setUrl(environment.getRequiredProperty(PROP_DB_URL));
+        dataSource.setUsername(environment.getRequiredProperty(PROP_DB_USERNAME));
+        dataSource.setPassword(environment.getRequiredProperty(PROP_DB_PASSWORD));
         return dataSource;
     }
 
@@ -77,14 +77,14 @@ public class AppConfig {
 
     private Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty(PROP_HIBERNATE_DIALECT, env.getRequiredProperty(PROP_HIBERNATE_DIALECT));
+        properties.setProperty(PROP_HIBERNATE_DIALECT, environment.getRequiredProperty(PROP_HIBERNATE_DIALECT));
         return properties;
     }
 
     @Bean
     public DataSourceInitializer dataSourceInitializer() {
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
-        resourceDatabasePopulator.addScript(new ClassPathResource(env.getRequiredProperty(PROP_INIT_DB)));
+        resourceDatabasePopulator.addScript(new ClassPathResource(environment.getRequiredProperty(PROP_INIT_DB)));
 
         DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
         dataSourceInitializer.setDataSource(dataSource());

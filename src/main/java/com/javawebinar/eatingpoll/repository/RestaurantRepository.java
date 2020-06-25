@@ -6,7 +6,6 @@ import com.javawebinar.eatingpoll.model.Restaurant;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long>, JpaSpecificationExecutor<Restaurant> {
@@ -16,12 +15,10 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long>, J
     @Query(value = "SELECT DISTINCT r FROM Restaurant r LEFT JOIN FETCH r.dishes")
     List<Restaurant> findAll();
 
-    @Transactional
     @Modifying
     @Query(value = "DELETE FROM restaurant WHERE id=?", nativeQuery = true)
     void deleteById(Long id);
 
-    @Transactional
     @Modifying
     @Query(value = "UPDATE Restaurant r SET r.votesCount = 0")
     void setAllVotesCountToZero();

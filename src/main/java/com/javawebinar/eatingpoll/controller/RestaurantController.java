@@ -27,16 +27,16 @@ public class RestaurantController {
     }
 
     @PostMapping(value = "/save")
-    public String save(@ModelAttribute("restaurant") Restaurant restaurant) {
-        logger.info("saving restaurant: {}", restaurant);
-        restaurantService.save(restaurant);
+    public String saveNewRestaurant(@ModelAttribute("restaurant") Restaurant restaurant) {
+        logger.info("saving new restaurant: {}", restaurant);
+        restaurantService.saveNewRestaurant(restaurant);
         return "redirect:/admin/home";
     }
 
     @PostMapping(value = "/update")
-    public String update(@ModelAttribute("restaurant") Restaurant restaurant) {
+    public String updateRestaurant(@ModelAttribute("restaurant") Restaurant restaurant) {
         logger.info("updating restaurant with id={}", restaurant.getId());
-        restaurantService.update(restaurant);
+        restaurantService.updateRestaurant(restaurant);
         return "redirect:/admin/home";
     }
 
