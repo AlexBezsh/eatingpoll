@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/AlexBezsh/eatingpoll.svg?branch=master)](https://travis-ci.org/AlexBezsh/eatingpoll)
 
 # Eating Poll
-### Web application was developed from scratch in accordance with the task:
+### Web application was developed in accordance with the task:
 Build a voting system for deciding where to have lunch.
 
  * 2 types of users: admin and regular users
